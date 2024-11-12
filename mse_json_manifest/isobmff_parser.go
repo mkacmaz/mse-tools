@@ -12,10 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package main
+package msejsonmanifest
 
 import (
 	"fmt"
+
 	"github.com/acolwell/mse-tools/isobmff"
 )
 

@@ -23,6 +23,8 @@ import (
 	"net/http"
 	"os"
 	"strings"
+
+	msejsonmanifest "github.com/mkacmaz/mse-tools/mse_json_manifest"
 )
 
 func main() {
@@ -45,7 +47,7 @@ func main() {
 		in = resp.Body
 	} else {
 		in, err = os.Open(os.Args[1])
-		if in == nil {
+		if err != nil {
 			log.Printf("can't open file; err=%s\n", err.Error())
 			os.Exit(1)
 		}
@@ -53,7 +55,7 @@ func main() {
 
 	buf := [4096]byte{}
 
-	var parser Parser = nil
+	var parser msejsonmanifest.Parser = nil
 	for done := false; !done; {
 		bytesRead, err := in.Read(buf[:])
 		if err == io.EOF || err == io.ErrClosedPipe {
@@ -66,9 +68,9 @@ func main() {
 				log.Printf("Not enough bytes to detect file type.\n")
 				break
 			} else if binary.BigEndian.Uint32(buf[0:4]) == 0x1a45dfa3 {
-				parser = NewWebMParser()
+				parser = msejsonmanifest.NewWebMParser()
 			} else if bytes.NewBuffer(buf[4:8]).String() == "ftyp" {
-				parser = NewISOBMFFParser()
+				parser = msejsonmanifest.NewISOBMFFParser()
 			}
 
 			if parser == nil {

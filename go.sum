@@ -1,0 +1,4 @@
+github.com/acolwell/mse-tools v0.0.0-20200718013309-43bb42a5856f h1:zJeNLCkjPn29bmfplKTu4jz1LcUvW4iSRxJnBl9gVyQ=
+github.com/acolwell/mse-tools v0.0.0-20200718013309-43bb42a5856f/go.mod h1:zrDN3oJn6r5fuckpYSeigTZIrlKMJD2DqmJooPJ5F0c=
+golang.org/x/net v0.31.0 h1:68CPQngjLL0r2AlUKiSxtQFKvzRVbnzLwMUn5SzcLHo=
+golang.org/x/net v0.31.0/go.mod h1:P4fl1q7dY2hnZFxEk4pPSkDHF+QqjitcnDjUQyMM+pM=
