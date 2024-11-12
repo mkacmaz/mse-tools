@@ -16,11 +16,13 @@ package msejsonmanifest
 
 import (
 	"fmt"
+	"io"
 
 	"github.com/acolwell/mse-tools/isobmff"
 )
 
 type isobmffClient struct {
+	out                io.Writer
 	foundInitSegment   bool
 	mediaSegmentOffset int64
 	manifest           *JSONManifest
@@ -78,17 +80,18 @@ func (c *isobmffClient) OnElementEnd(offset int64, id string) bool {
 }
 
 func (c *isobmffClient) OnEndOfData(offset int64) {
-	fmt.Printf(c.manifest.ToJSON())
+	_, _ = c.out.Write([]byte(c.manifest.ToJSON()))
 }
 
-func newISOBMFFClient() *isobmffClient {
+func newISOBMFFClient(out io.Writer) *isobmffClient {
 	return &isobmffClient{
+		out:                out,
 		foundInitSegment:   false,
 		mediaSegmentOffset: -1,
 		manifest:           NewJSONManifest(),
 	}
 }
 
-func NewISOBMFFParser() *isobmff.Parser {
-	return isobmff.NewParser(newISOBMFFClient())
+func NewISOBMFFParser(out io.Writer) *isobmff.Parser {
+	return isobmff.NewParser(newISOBMFFClient(out))
 }

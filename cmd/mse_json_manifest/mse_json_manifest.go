@@ -53,6 +53,8 @@ func main() {
 		}
 	}
 
+	out := os.Stdout
+
 	buf := [4096]byte{}
 
 	var parser msejsonmanifest.Parser = nil
@@ -68,9 +70,9 @@ func main() {
 				log.Printf("Not enough bytes to detect file type.\n")
 				break
 			} else if binary.BigEndian.Uint32(buf[0:4]) == 0x1a45dfa3 {
-				parser = msejsonmanifest.NewWebMParser()
+				parser = msejsonmanifest.NewWebMParser(out)
 			} else if bytes.NewBuffer(buf[4:8]).String() == "ftyp" {
-				parser = msejsonmanifest.NewISOBMFFParser()
+				parser = msejsonmanifest.NewISOBMFFParser(out)
 			}
 
 			if parser == nil {

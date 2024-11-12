@@ -16,6 +16,7 @@ package msejsonmanifest
 
 import (
 	"fmt"
+	"io"
 	"time"
 
 	"github.com/acolwell/mse-tools/ebml"
@@ -23,6 +24,7 @@ import (
 )
 
 type webMClient struct {
+	out             io.Writer
 	vcodec          string
 	acodec          string
 	timecodeScale   uint64
@@ -94,7 +96,9 @@ func (c *webMClient) OnListEnd(offset int64, id int) bool {
 	}
 
 	if id == webm.IdSegment {
-		fmt.Printf(c.manifest.ToJSON())
+		if _, err := c.out.Write([]byte(c.manifest.ToJSON())); err != nil {
+			return false
+		}
 	}
 	return true
 }
@@ -152,8 +156,9 @@ func (c *webMClient) OnString(id int, value string) bool {
 	return true
 }
 
-func newWebMClient() *webMClient {
+func newWebMClient(out io.Writer) *webMClient {
 	return &webMClient{
+		out:             out,
 		vcodec:          "",
 		acodec:          "",
 		timecodeScale:   0,
@@ -166,8 +171,8 @@ func newWebMClient() *webMClient {
 	}
 }
 
-func NewWebMParser() *ebml.Parser {
-	c := newWebMClient()
+func NewWebMParser(out io.Writer) *ebml.Parser {
+	c := newWebMClient(out)
 
 	return ebml.NewParser(ebml.GetListIDs(webm.IdTypes()), webm.UnknownSizeInfo(),
 		ebml.NewElementParser(c, webm.IdTypes()))
