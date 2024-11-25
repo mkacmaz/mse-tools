@@ -15,7 +15,7 @@
 package webm
 
 import (
-	"github.com/acolwell/mse-tools/ebml"
+	"github.com/mkacmaz/mse-tools/ebml"
 )
 
 func WriteHeader(writer *ebml.Writer) (n int, err error) {

@@ -19,8 +19,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/acolwell/mse-tools/ebml"
-	"github.com/acolwell/mse-tools/webm"
+	"github.com/mkacmaz/mse-tools/ebml"
+	"github.com/mkacmaz/mse-tools/webm"
 )
 
 const (
